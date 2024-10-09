@@ -1,0 +1,22 @@
+﻿@page "/weather"
+@using BetBalance.Db
+
+<h1>Weather</h1>
+
+<p>This component demonstrates showing data.</p>
+
+
+
+@code {
+    [Inject] public BetDatabase BetDatabase { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(500);
+
+        await BetDatabase.Init();
+
+        Console.WriteLine("--the end---");
+    }
+}
