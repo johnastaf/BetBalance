@@ -1,0 +1,58 @@
+﻿@page "/bets"
+@using BetBalance.Db
+
+<PageTitle>Create bet</PageTitle>
+
+
+<MudStack>
+    <MudTextField Style="width: 240px;" @bind-Value="BetValue" Variant="Variant.Outlined"></MudTextField>
+<MudSelect @bind-Value="BookmakerValue" Placeholder="Please Select" AdornmentColor="Color.Primary">
+    <MudSelectItem Value="@("Liga Stavok")">Liga Stavok</MudSelectItem>
+    <MudSelectItem Value="@("WinLine")">WinLine</MudSelectItem>
+    <MudSelectItem Value="@("FonBet")">FonBet</MudSelectItem>
+    <MudSelectItem Value="@("BetBoom")">BetBoom</MudSelectItem>
+    <MudSelectItem Value="@("Pari")">Pari</MudSelectItem>
+    <MudSelectItem Value="@("OlimpBet")">OlimpBet</MudSelectItem>
+</MudSelect>
+</MudStack>
+
+<MudButton Class="mt-4" Color="Color.Primary" Variant="Variant.Filled" @onclick="Save">Save</MudButton>
+@* <MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="GetCount">Get</MudButton>
+
+<MudText Class="mb-4">Folder db: @path</MudText>
+<MudText Class="mb-4">Count: @currentCount</MudText> *@
+
+
+@code {
+
+    [Inject] public BetDatabase BetDatabase { get; set; }
+    private int currentCount = 0;
+    private string path = string.Empty;
+    private int BetValue { get; set; } = -100;
+    private string BookmakerValue { get; set; } = "Liga Stavok";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await BetDatabase.Init();
+        path = Constants.DatabasePath;
+    }
+
+    private async Task GetCount()
+    {
+
+        var bets = await BetDatabase.GetItemsAsync();
+        currentCount = bets.Count();
+    }
+
+    private async Task Save()
+    {
+        Bet bet = new()
+            {
+                Date = DateTime.Now,
+                Amount = BetValue,
+                Bookmaker = BookmakerValue
+            };
+
+        await BetDatabase.SaveItemAsync(bet);
+    }
+}

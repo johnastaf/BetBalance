@@ -1,5 +1,23 @@
 ﻿@page "/"
+@using BetBalance.Db
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<MudText Class="mb-4">Balance: @amount</MudText>
+
+@code {
+
+    [Inject] public BetDatabase BetDatabase { get; set; }
+    private int amount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetBalance();
+    }
+
+    private async Task GetBalance()
+    {
+        var bets = await BetDatabase.GetItemsAsync();
+        amount = bets.Sum(b => b.Amount);
+    }
+}
+

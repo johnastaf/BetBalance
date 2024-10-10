@@ -1,5 +1,6 @@
 ﻿using BetBalance.Db;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 
 namespace BetBalance
 {
@@ -16,6 +17,7 @@ namespace BetBalance
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddMudServices();
             builder.Services.AddSingleton<BetDatabase>();
 
 #if DEBUG
